@@ -1,0 +1,7 @@
+{
+  "name": "YZ Architect - Mobile",
+  "description": "A sophisticated architectural portfolio for YZ Architect featuring a Gemini-powered design assistant and project showcase.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
