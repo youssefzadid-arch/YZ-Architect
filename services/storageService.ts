@@ -44,7 +44,7 @@ const INITIAL_PHILOSOPHY: PhilosophyAxiom[] = [
     subtitle: 'Axiome I',
     title: 'Ancrage Territorial',
     text: "À Settat, nous travaillons avec le sol de la Chaouia. Nos fondations ne sont pas de simples supports, elles sont une négociation avec la topographie locale.",
-    imageUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1518005020481-a68515605041?q=80&w=800'
   }
 ];
 
@@ -62,11 +62,21 @@ const getStored = <T>(key: string, initial: T): T => {
   }
 };
 
+const dispatchRefresh = () => {
+  window.dispatchEvent(new Event('storage'));
+};
+
 export const getSettings = (): StudioSettings => getStored(SETTINGS_KEY, INITIAL_SETTINGS);
-export const saveSettings = (s: StudioSettings) => localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+export const saveSettings = (s: StudioSettings) => {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+  dispatchRefresh();
+};
 
 export const getAxioms = (): PhilosophyAxiom[] => getStored(PHILOSOPHY_KEY, INITIAL_PHILOSOPHY);
-export const saveAxioms = (a: PhilosophyAxiom[]) => localStorage.setItem(PHILOSOPHY_KEY, JSON.stringify(a));
+export const saveAxioms = (a: PhilosophyAxiom[]) => {
+  localStorage.setItem(PHILOSOPHY_KEY, JSON.stringify(a));
+  dispatchRefresh();
+};
 
 export const getProjects = (): Project[] => getStored(PROJECTS_KEY, INITIAL_PROJECTS);
 export const saveProject = (project: Partial<Project>): Project[] => {
@@ -84,12 +94,14 @@ export const saveProject = (project: Partial<Project>): Project[] => {
     updated = [...projects, newProject];
   }
   localStorage.setItem(PROJECTS_KEY, JSON.stringify(updated));
+  dispatchRefresh();
   return updated;
 };
 
 export const deleteProject = (id: string): Project[] => {
   const updated = getProjects().filter(p => p.id !== id);
   localStorage.setItem(PROJECTS_KEY, JSON.stringify(updated));
+  dispatchRefresh();
   return updated;
 };
 
@@ -123,12 +135,14 @@ export const savePost = (post: Partial<BlogPost>): BlogPost[] => {
   }
   
   localStorage.setItem(POSTS_KEY, JSON.stringify(updated));
+  dispatchRefresh();
   return updated;
 };
 
 export const deletePost = (id: string): BlogPost[] => {
   const updated = getPosts().filter(p => p.id !== id);
   localStorage.setItem(POSTS_KEY, JSON.stringify(updated));
+  dispatchRefresh();
   return updated;
 };
 

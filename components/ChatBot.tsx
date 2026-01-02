@@ -6,7 +6,7 @@ import { ChatMessage } from '../types';
 const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', content: 'Bienvenue chez YZ Architecte. Je suis votre consultant en design. Comment puis-je vous aider aujourd\'hui ?' }
+    { role: 'model', content: 'Dialogue architectural ouvert. Comment puis-je assister votre réflexion aujourd\'hui ?' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -20,12 +20,10 @@ const ChatBot: React.FC = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-
     const userMsg = input;
     setInput('');
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setIsTyping(true);
-
     const response = await getArchitecturalResponse(userMsg);
     setMessages(prev => [...prev, { role: 'model', content: response }]);
     setIsTyping(false);
@@ -35,30 +33,27 @@ const ChatBot: React.FC = () => {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-black text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-200"
+        className="fixed bottom-10 right-10 z-50 w-20 h-20 bg-black text-pistachio rounded-none border-[3px] border-black shadow-[10px_10px_0px_0px_#93c572] flex items-center justify-center hover:bg-pistachio hover:text-black transition-all duration-300"
       >
-        <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-comment-dots'} text-xl`}></i>
+        <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-terminal'} text-2xl`}></i>
       </button>
 
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[90vw] md:w-96 h-[500px] glass rounded-2xl shadow-2xl flex flex-col border border-white overflow-hidden animate-in fade-in zoom-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-black text-white px-6 py-4 flex items-center justify-between">
+        <div className="fixed bottom-36 right-10 z-50 w-[95vw] md:w-[450px] h-[600px] bg-white rounded-none border-[4px] border-black shadow-[20px_20px_0px_0px_#93c572] flex flex-col overflow-hidden animate-in zoom-in duration-300">
+          <div className="bg-black text-white px-8 py-6 flex items-center justify-between border-b-[4px] border-pistachio">
             <div>
-              <h3 className="font-bold tracking-tight">Assistant Design YZ</h3>
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest">Propulsé par Gemini</p>
+              <h3 className="font-bold tracking-tighter text-xl serif italic">YZ_ASSISTANT</h3>
+              <p className="text-[10px] text-pistachio uppercase tracking-[0.5em] font-bold">Protocol Gemini</p>
             </div>
           </div>
 
-          <div 
-            ref={scrollRef}
-            className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
-          >
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-8 space-y-6 scroll-smooth">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] px-4 py-2 rounded-2xl text-sm ${
+                <div className={`max-w-[85%] px-6 py-4 border-[2px] border-black text-sm font-light leading-relaxed ${
                   msg.role === 'user' 
-                    ? 'bg-black text-white rounded-br-none' 
-                    : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none shadow-sm'
+                    ? 'bg-black text-white' 
+                    : 'bg-pistachio-soft/50 text-black shadow-[6px_6px_0px_0px_#93c572]'
                 }`}>
                   {msg.content}
                 </div>
@@ -66,31 +61,30 @@ const ChatBot: React.FC = () => {
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 px-4 py-2 rounded-2xl flex space-x-1">
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                <div className="bg-pistachio-soft px-4 py-2 border-2 border-black flex space-x-2">
+                  <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:0.2s]"></div>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="p-4 border-t border-gray-100 bg-white/50">
-            <div className="flex items-center space-x-2">
+          <div className="p-6 border-t-[4px] border-black bg-white">
+            <div className="flex items-center space-x-4">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Posez vos questions..."
-                className="flex-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/5"
+                placeholder="Entrer commande..."
+                className="flex-1 bg-pistachio-soft/20 border-[3px] border-black/5 px-6 py-4 text-sm font-bold focus:outline-none focus:border-black transition-all"
               />
               <button 
                 onClick={handleSend}
                 disabled={!input.trim()}
-                className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center disabled:opacity-30"
+                className="w-14 h-14 bg-black text-pistachio flex items-center justify-center disabled:opacity-20 hover:bg-pistachio hover:text-black transition-all"
               >
-                <i className="fa-solid fa-paper-plane text-xs"></i>
+                <i className="fa-solid fa-paper-plane"></i>
               </button>
             </div>
           </div>

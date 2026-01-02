@@ -12,14 +12,13 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     setSettings(getSettings());
-    // Update whenever storage changes (e.g. from Admin tab in same window)
     const handleStorage = () => setSettings(getSettings());
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
   const navLinks = [
-    { name: 'Archive', path: '/' },
+    { name: 'Portfolio', path: '/' },
     { name: 'Journal', path: '/blog' },
     { name: 'Studio Lab', path: '/studio' },
     { name: 'Manifeste', path: '/philosophy' },
@@ -31,28 +30,28 @@ const Navbar: React.FC = () => {
   const brandSub = settings?.firmSub || "Settat • Maroc";
 
   return (
-    <nav className="fixed top-0 w-full z-50 glass border-b-2 border-black/5">
+    <nav className="fixed top-0 w-full z-50 glass">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-24">
+        <div className="flex justify-between h-20">
           <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-5 hover:opacity-70 transition-opacity">
-              <Logo className="w-12 h-12" />
+            <Link to="/" className="flex items-center space-x-4 hover:opacity-70 transition-opacity">
+              <Logo className="w-10 h-10" />
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tighter leading-none">{brandName}</span>
-                <span className="text-[8px] uppercase tracking-[0.5em] text-[#d4a373] mt-2 font-bold">{brandSub}</span>
+                <span className="text-xl font-black tracking-tighter leading-none uppercase">{brandName}</span>
+                <span className="text-[7px] uppercase tracking-[0.6em] text-pistachio mt-1 font-bold">{brandSub}</span>
               </div>
             </Link>
           </div>
           
-          <div className="hidden md:flex items-center space-x-12">
+          <div className="hidden md:flex items-center space-x-10">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-[9px] font-bold tracking-[0.3em] uppercase transition-all ${
-                  link.isSpecial ? 'px-6 py-2 border-2 border-black bg-white hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]' : ''
+                className={`text-[9px] font-bold tracking-[0.4em] uppercase transition-all pb-1 ${
+                  link.isSpecial ? 'px-6 py-2 border border-black bg-white hover:bg-black hover:text-white' : ''
                 } ${
-                  location.pathname === link.path ? 'text-black' : 'text-gray-400 hover:text-black'
+                  location.pathname === link.path ? 'border-b-2 border-pistachio text-black' : 'text-black/30 hover:text-black'
                 }`}
               >
                 {link.name}
@@ -61,18 +60,25 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-900 focus:outline-none">
-              <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars-staggered'} text-2xl`}></i>
+            <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
+              <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars-staggered'} text-xl`}></i>
             </button>
           </div>
         </div>
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-[#fdfaf6] border-b-2 border-black animate-in slide-in-from-top duration-300">
+        <div className="md:hidden bg-white border-b border-black animate-in slide-in-from-top duration-300">
           <div className="px-8 pt-10 pb-16 space-y-6">
             {navLinks.map((link) => (
-              <Link key={link.path} to={link.path} onClick={() => setIsOpen(false)} className={`block py-5 text-4xl font-bold serif border-b border-gray-100 tracking-tighter ${location.pathname === link.path ? 'text-[#d4a373] italic' : 'text-gray-900'}`}>
+              <Link 
+                key={link.path} 
+                to={link.path} 
+                onClick={() => setIsOpen(false)} 
+                className={`block py-4 text-4xl font-black tracking-tighter uppercase border-b border-black/5 ${
+                  location.pathname === link.path ? 'text-pistachio' : 'text-black'
+                }`}
+              >
                 {link.name}
               </Link>
             ))}

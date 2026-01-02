@@ -30,52 +30,50 @@ const Home: React.FC = () => {
   if (!settings) return null;
 
   return (
-    <div className="animate-in fade-in duration-700 bg-[#fdfaf6]">
+    <div className="animate-in fade-in duration-700 bg-white">
       {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center overflow-hidden border-b-2 border-black">
-        <div className="absolute inset-0 bg-[#faedcd] opacity-10"></div>
+      <section className="relative h-[90vh] flex items-center overflow-hidden border-b-[1px] border-black">
+        <div className="absolute inset-0 bg-pistachio opacity-[0.02]"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-8">
-              <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-[#d4a373] mb-12 block">{settings.firmName} • {settings.firmSub}</span>
-              <h1 className="text-7xl md:text-[9rem] leading-[0.85] serif font-bold tracking-tighter mb-12">
-                Matière & <br/>
-                <span className="italic font-normal">Silence</span>
-              </h1>
-              <p className="text-xl md:text-3xl font-light text-gray-700 max-w-2xl leading-relaxed border-l-4 border-black pl-10 py-4">
+          <div className="max-w-5xl">
+            <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-pistachio mb-10 block">
+              {settings.firmName} • {settings.firmSub}
+            </span>
+            <h1 className="text-7xl md:text-[11rem] leading-[0.9] font-extrabold tracking-tighter mb-16 text-black uppercase">
+              Architecture <br/>
+              <span className="text-pistachio">Vernaculaire</span>
+            </h1>
+            <div className="flex flex-col md:flex-row md:items-start gap-12">
+              <p className="text-xl md:text-3xl font-light text-black/70 max-w-2xl leading-tight border-l-[1px] border-black pl-10 py-2">
                 {settings.bio.split('.')[0]}.
               </p>
-            </div>
-            <div className="lg:col-span-4 hidden lg:flex justify-end">
-               <div className="relative group">
-                 <div className="absolute -inset-6 border-2 border-black/5 group-hover:border-black/20 transition-all duration-700"></div>
-                 <div className="w-80 aspect-[3/4] border-2 border-black p-3 bg-white shadow-[25px_25px_0px_0px_#faedcd]">
-                   <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=800" className="w-full h-full object-cover grayscale transition-all duration-[2s] group-hover:grayscale-0" alt="Context" />
-                 </div>
-               </div>
+              <div className="flex items-center space-x-4 pt-4">
+                <div className="w-12 h-[1px] bg-black"></div>
+                <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-black/30">Étude & Réalisation</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Projects Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-40">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-16">
+      <section className="max-w-7xl mx-auto px-4 py-48">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-40 gap-16">
           <div className="max-w-3xl">
-            <h2 className="text-6xl font-bold tracking-tight serif mb-6 italic">L'Archive Tectonique</h2>
-            <div className="h-2 w-32 bg-black mb-8"></div>
-            <p className="text-gray-500 font-light text-2xl leading-relaxed italic">Curations d'espaces pensés pour la permanence.</p>
+            <h2 className="text-6xl md:text-8xl font-extrabold tracking-tighter uppercase mb-6">Projets</h2>
+            <div className="h-1 w-24 bg-pistachio mb-10"></div>
+            <p className="text-black/40 font-medium text-2xl uppercase tracking-tighter leading-none">Curation de la forme et du lieu.</p>
           </div>
           
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`text-[10px] font-bold uppercase tracking-[0.3em] px-8 py-4 border-2 transition-all ${
+                className={`text-[9px] font-bold uppercase tracking-[0.4em] px-8 py-4 border-[1px] transition-all ${
                   filter === cat 
-                  ? 'bg-black text-white border-black shadow-[6px_6px_0px_0px_#d4a373]' 
-                  : 'bg-transparent text-gray-400 border-gray-100 hover:border-black hover:text-black hover:bg-white'
+                  ? 'bg-black text-white border-black shadow-[4px_4px_0_0_#93c572]' 
+                  : 'bg-white text-black/30 border-black/10 hover:border-black hover:text-black'
                 }`}
               >
                 {cat}
@@ -91,25 +89,25 @@ const Home: React.FC = () => {
               key={project.id} 
               className={`group block relative ${index % 2 !== 0 ? 'md:mt-48' : ''}`}
             >
-              <div className="relative overflow-hidden border-2 border-black bg-white aspect-[4/5] shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[30px_30px_0px_0px_#faedcd] transition-all duration-[1s] p-4">
-                <div className="w-full h-full overflow-hidden border border-black/10">
+              <div className="relative overflow-hidden border-[1px] border-black bg-white aspect-[4/5] group-hover:shadow-[30px_30px_0_0_#93c572] transition-all duration-[0.6s] p-4">
+                <div className="w-full h-full overflow-hidden">
                   <img 
                     src={project.imageUrl} 
                     alt={project.title} 
-                    className="w-full h-full object-cover grayscale transition-all duration-[3s] group-hover:grayscale-0 group-hover:scale-105"
+                    className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
                   />
                 </div>
-                <div className="absolute top-10 right-10 bg-black text-white text-[9px] font-bold px-4 py-2 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                  Ouvrir le Dossier
+                <div className="absolute bottom-8 right-8 bg-black text-white text-[9px] font-bold px-5 py-3 uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all">
+                  Explorer
                 </div>
               </div>
-              <div className="mt-12 space-y-4">
-                <div className="flex items-center space-x-6">
-                  <span className="h-[2px] w-12 bg-black"></span>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#d4a373]">{project.category}</span>
+              <div className="mt-12 space-y-3">
+                <div className="flex items-center space-x-4">
+                  <span className="h-[1px] w-12 bg-pistachio"></span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-pistachio">{project.category}</span>
                 </div>
-                <h3 className="text-5xl font-bold serif group-hover:italic transition-all duration-500">{project.title}</h3>
-                <p className="text-gray-400 text-[12px] font-bold uppercase tracking-widest">{project.location} — {project.year}</p>
+                <h3 className="text-5xl font-extrabold tracking-tighter uppercase">{project.title}</h3>
+                <p className="text-black/20 text-[11px] font-bold uppercase tracking-[0.2em]">{project.location} • {project.year}</p>
               </div>
             </Link>
           ))}
@@ -117,28 +115,28 @@ const Home: React.FC = () => {
       </section>
 
       {/* Vision Section */}
-      <section className="py-48 bg-[#1a1a1a] text-white">
+      <section className="py-64 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
           <div className="space-y-12">
-            <span className="text-[#d4a373] text-[10px] font-bold uppercase tracking-[0.8em]">{settings.visionSub}</span>
-            <h3 className="text-6xl md:text-8xl font-bold serif leading-tight">
+            <span className="text-pistachio text-[10px] font-bold uppercase tracking-[0.8em]">{settings.visionSub}</span>
+            <h3 className="text-6xl md:text-[7rem] font-extrabold uppercase leading-[0.95] tracking-tighter">
               {settings.visionTitle.split(' ')[0]} <br/>
-              <span className="italic text-[#faedcd] font-normal">{settings.visionTitle.split(' ').slice(1).join(' ')}</span>
+              <span className="text-pistachio">{settings.visionTitle.split(' ').slice(1).join(' ')}</span>
             </h3>
-            <p className="text-2xl text-gray-400 font-light leading-relaxed max-w-xl border-l-2 border-[#d4a373]/30 pl-10 py-2">
+            <p className="text-2xl text-white/30 font-light leading-snug max-w-xl border-l-[1px] border-pistachio pl-10 py-2">
               {settings.bio}
             </p>
-            <Link to="/philosophy" className="inline-flex px-14 py-8 bg-[#faedcd] text-black font-bold text-[11px] uppercase tracking-[0.4em] hover:bg-white transition-all shadow-[12px_12px_0px_0px_rgba(212,163,115,0.4)]">
-              Accéder au Manifeste
+            <Link to="/philosophy" className="inline-flex px-12 py-8 bg-pistachio text-black font-bold text-[10px] uppercase tracking-[0.4em] hover:bg-white transition-all">
+              Le Manifeste
             </Link>
           </div>
           <div className="relative">
-             <div className="absolute -inset-10 border-2 border-white/5 pointer-events-none"></div>
-             <div className="border-2 border-white/20 p-3 bg-white/5">
+             <div className="absolute -inset-8 border border-white/10 pointer-events-none"></div>
+             <div className="border border-white p-3 bg-white/5 shadow-[30px_30px_0_0_#93c572]">
                 <img 
                   src="https://images.unsplash.com/photo-1518005020481-a68515605041?q=80&w=1200" 
-                  alt="Processus" 
-                  className="w-full grayscale contrast-125 transition-all duration-700 hover:grayscale-0"
+                  alt="Architecture" 
+                  className="w-full grayscale brightness-110 contrast-125 transition-all duration-700 hover:grayscale-0"
                 />
              </div>
           </div>

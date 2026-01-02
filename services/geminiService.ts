@@ -2,7 +2,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { FIRM_BIO, PROJECTS } from "../constants";
 
-// Fix: Use process.env.API_KEY directly as per SDK guidelines
 const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getArchitecturalResponse = async (userMessage: string) => {
@@ -22,7 +21,6 @@ export const getArchitecturalResponse = async (userMessage: string) => {
     1. Répondez aux questions sur notre philosophie et nos projets.
     2. Si on vous interroge sur une nouvelle idée de design, fournissez des commentaires architecturaux sophistiqués.
     3. Gardez des réponses concises et inspirantes.
-    4. Si quelqu'un demande à "prendre contact", suggérez-lui d'utiliser le formulaire de contact ou de nous rendre visite en personne.
   `;
 
   try {
@@ -35,11 +33,10 @@ export const getArchitecturalResponse = async (userMessage: string) => {
       },
     });
 
-    // Fix: Access .text property directly (not a method)
-    return response.text || "Je contemple actuellement un défi de conception. Pourriez-vous reformuler ?";
+    return response.text || "Je contemple actuellement un défi de conception.";
   } catch (error) {
     console.error("Erreur API Gemini:", error);
-    return "Je m'excuse, mais ma connexion avec le studio est actuellement interrompue. Veuillez réessayer dans un instant.";
+    return "Ma connexion avec le studio est actuellement interrompue.";
   }
 };
 
@@ -48,7 +45,9 @@ export const generateConceptIdea = async (keywords: string) => {
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Générez une courte description poétique de concept architectural basée sur ces mots-clés : ${keywords}. Répondez en FRANÇAIS. Formatez en JSON avec "title", "concept", et "suggestedMaterials".`,
+      contents: `Générez une synthèse conceptuelle pour un projet architectural basé sur : ${keywords}.
+      Le ton doit être celui de YZ Architecte (Régionalisme Critique, vérité des matériaux, ancrage territorial).
+      Répondez en FRANÇAIS. Format JSON uniquement.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -56,16 +55,85 @@ export const generateConceptIdea = async (keywords: string) => {
           properties: {
             title: { type: Type.STRING },
             concept: { type: Type.STRING },
-            suggestedMaterials: { type: Type.ARRAY, items: { type: Type.STRING } }
+            philosophy: { type: Type.STRING, description: "L'ancrage théorique du projet" },
+            suggestedMaterials: { type: Type.ARRAY, items: { type: Type.STRING } },
+            visualPrompt: { type: Type.STRING, description: "Un prompt détaillé en ANGLAIS pour générer un rendu architectural de ce concept." }
           },
-          required: ["title", "concept", "suggestedMaterials"]
+          required: ["title", "concept", "philosophy", "suggestedMaterials", "visualPrompt"]
         }
       }
     });
-    // Fix: Access .text property directly (not a method)
     return JSON.parse(response.text || '{}');
   } catch (error) {
     console.error("Erreur Génération Concept:", error);
+    return null;
+  }
+};
+
+export const generateCostEstimation = async (params: { surface: number, standing: string, location: string }) => {
+  const ai = getAI();
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Estimez le coût de construction au Maroc (en MAD - Dirhams) pour un projet de ${params.surface}m2 avec un standing ${params.standing} à ${params.location}.
+      Basez-vous sur les prix actuels du marché marocain 2024.
+      IMPORTANT : Fixez les honoraires de l'architecte à exactement 5% du budget total.
+      Répondez en FRANÇAIS. Format JSON uniquement.`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            totalEstimateMin: { type: Type.NUMBER },
+            totalEstimateMax: { type: Type.NUMBER },
+            pricePerMeter: { type: Type.NUMBER },
+            breakdown: {
+              type: Type.OBJECT,
+              properties: {
+                grosOeuvre: { type: Type.NUMBER, description: "Pourcentage du coût pour la structure" },
+                secondOeuvre: { type: Type.NUMBER, description: "Pourcentage pour les finitions" },
+                honoraires: { type: Type.NUMBER, description: "Doit être fixé à 5 (pour 5%)" },
+                divers: { type: Type.NUMBER }
+              },
+              required: ["grosOeuvre", "secondOeuvre", "honoraires", "divers"]
+            },
+            marketContext: { type: Type.STRING, description: "Bref commentaire sur les prix actuels des matériaux au Maroc (ciment, acier, pierre locale)." },
+            recommendations: { type: Type.ARRAY, items: { type: Type.STRING } }
+          },
+          required: ["totalEstimateMin", "totalEstimateMax", "pricePerMeter", "breakdown", "marketContext", "recommendations"]
+        }
+      }
+    });
+    return JSON.parse(response.text || '{}');
+  } catch (error) {
+    console.error("Erreur Estimation Coût:", error);
+    return null;
+  }
+};
+
+export const generateArchitecturalVisual = async (prompt: string) => {
+  const ai = getAI();
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: {
+        parts: [{ text: `High-end architectural visualization, ${prompt}. Minimalist aesthetic, dramatic lighting, sharp lines, tectonic focus, wide-angle shot, photorealistic, 4k.` }],
+      },
+      config: {
+        imageConfig: {
+          aspectRatio: "16:9"
+        }
+      },
+    });
+
+    for (const part of response.candidates[0].content.parts) {
+      if (part.inlineData) {
+        return `data:image/png;base64,${part.inlineData.data}`;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Erreur Génération Image:", error);
     return null;
   }
 };

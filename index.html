@@ -7,32 +7,84 @@
     <title>YZ Architecte | Régionalisme Critique Settat</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pistachio: '#9dbd83',
+                        'pistachio-soft': '#f2f5ef',
+                        'pistachio-dark': '#7a9665',
+                        dark: '#000000',
+                    },
+                    fontFamily: {
+                        sans: ['"Space Grotesk"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         :root {
-            --earth: #d4a373;
-            --clay: #faedcd;
-            --concrete: #e9edc9;
-            --dark: #1a1a1a;
+            --pistachio: #9dbd83;
+            --pistachio-soft: #f2f5ef;
+            --dark: #000000;
+            --white: #ffffff;
         }
         body {
             font-family: 'Space Grotesk', sans-serif;
-            background-color: #fdfaf6;
-            color: #1a1a1a;
+            background-color: #ffffff;
+            color: #000000;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        h1, h2, h3, .serif {
-            font-family: 'Fraunces', serif;
+        h1, h2, h3, h4, .modern-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1; /* Adjusted to prevent clipping */
         }
         .tectonic-border {
-            border: 1px solid rgba(26, 26, 26, 0.1);
+            border: 1px solid #000000;
         }
         .glass {
-            background: rgba(253, 250, 246, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #000000;
         }
-        .bg-clay { background-color: #faedcd; }
-        .text-earth { color: #d4a373; }
+        .pistachio-shadow {
+            box-shadow: 10px 10px 0px 0px var(--pistachio);
+        }
+        .black-shadow {
+            box-shadow: 10px 10px 0px 0px #000000;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+        
+        .nav-link-active {
+            color: #000000 !important;
+            border-bottom: 2px solid #9dbd83;
+        }
+
+        /* Ensure smooth animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 <script type="importmap">
 {
